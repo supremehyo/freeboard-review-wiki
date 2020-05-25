@@ -99,7 +99,6 @@ $(document).ready(function () {
         var formData = $('#freeboardid').val();
         var formData2 = $('#getuserid').val();
         var freeid = $('#getfreeid').val();
-        
         console.log(freeid);
         if(formData == formData2)
         	{
