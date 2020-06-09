@@ -1,7 +1,11 @@
 package com.example.demo.DAO;
 
+import java.util.List;
+
+import com.example.demo.wikimodel.Debate;
+
 public interface IDebateDao {
 	void debatewrite(long id,String title, String content);
-	void debatelistread(long id);
-	String debateread(long id);
+	List<Debate> debatelistread(long id);
+	Debate debateread(long id);
 }

@@ -30,18 +30,19 @@ private PageMakerService pagemakerservice;
  public String freeboardList(int pageNum){	 
 
 	 PageMaker pageMaker =pagemakerservice.generatePagemaker(pageNum, 10, freeboardRepository);
-	 PageRequest pagerequest = PageRequest.of(pageNum-1, 10, Sort.Direction.DESC, "freeid");
-	 Page<Freeboard> freeboardPage = freeboardRepository.findAll(pagerequest); // findallÀº ¿ø·¡ ÆäÀÌÁö·Î ¸®ÅÏÇÔ
+	 PageRequest pagerequest = PageRequest.of(pageNum-1, 10, Sort.Direction.DESC, "freeid"); // ê²Œì‹œê¸€ 10ê°œë§Œ ìš”ì²­
+	 Page<Freeboard> freeboardPage = freeboardRepository.findAll(pagerequest);
 	 
 	 if(freeboardPage.getSize() ==0) {
-//¿¹¿ÜÃ³¸®¸¦ À§ÇØ¼­ ºó ¸®½ºÆ®¸¦ ¸®ÅÏÇØÁÜ.
+		 // ì˜ˆì™¸ì²˜ë¦¬ë¥¼ ìœ„í•´ì„œ ë¹ˆ ë¦¬ìŠ¤íŠ¸ë¥¼ ë¦¬í„´í•´ì¤€ë‹¤.
 		 session.setAttribute("boardList", new ArrayList<Freeboard>());
 		 session.setAttribute("pagemaker", pageMaker);
 		 return "freeboard";
 	 }
-	 List<Freeboard> freeboardList = freeboardPage.getContent(); // getContent ´Â ÆäÀÌÁö¸¦ ¸®½ºÆ®·Î º¯È¯ÇØÁÜ
+	 List<Freeboard> freeboardList = freeboardPage.getContent();
 	 session.setAttribute("boardList", freeboardList);
 	 session.setAttribute("pagemaker", pageMaker);
+	//í•´ë‹¹ session ê°’ì€ freeboard.html ì—ì„œ ì‚¬ìš©í•˜ê²Œ ëœë‹¤.
 	 return "freeboard";
  }
 }

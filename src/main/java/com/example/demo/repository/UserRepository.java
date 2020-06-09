@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.Model.Users;
 
 @Repository
-public interface UserRepository extends JpaRepository<Users, Long> //Long Àº Users ¶ó´Â Å×ÀÌºíÀÇ id °ªÀÇ ÀÚ·áÇüÀÌ ¿À¸é µÇ±â¶§¹®¿¡ longÀÌ ¿Ô´Ù.
+public interface UserRepository extends JpaRepository<Users, Long> //Long ï¿½ï¿½ Users ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ id ï¿½ï¿½ï¿½ï¿½ ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç±â¶§ï¿½ï¿½ï¿½ï¿½ longï¿½ï¿½ ï¿½Ô´ï¿½.
 {
 	
 	public Users findByUseridAndUserpw(String userid , String userpw);
+	public Users findByUserid(String userid);
 		
 	
 }

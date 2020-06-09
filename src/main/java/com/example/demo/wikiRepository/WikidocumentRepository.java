@@ -18,6 +18,7 @@ public interface WikidocumentRepository extends JpaRepository<Wikidocument, Long
 	@Modifying
 	@Query(value="update wikidocument set linktitle = :linktitle where title = :title", nativeQuery=true)
 	void downupdate(@Param("title") String title,@Param("linktitle") int linktitle);
+	//어떤 문서의 하위문서로 작성이 될때 자신의 상위문서의 id 를 업데이트한다.
 	
 	@Transactional
 	@Modifying
@@ -27,11 +28,11 @@ public interface WikidocumentRepository extends JpaRepository<Wikidocument, Long
 	@Transactional
 	@Modifying
 	@Query(value="update wikidocument set count = count+1 where title = :title", nativeQuery=true)
-	void countup(@Param("title") String title);
+	void countup(@Param("title") String title); //읽기요청이 된 title 을 기준으로 count 를 올린다.
 	
 	@Transactional
 	@Modifying
 	@Query(value="select * from wikidocument  order by count desc limit 10;", nativeQuery=true)
-	List <Wikidocument> countlist();
+	List <Wikidocument> countlist(); // 상위 10개를 내림차순으로 정렬한다.
 	
 }

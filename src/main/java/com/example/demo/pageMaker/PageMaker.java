@@ -1,14 +1,14 @@
 package com.example.demo.pageMaker;
 
 public class PageMaker {
-    private int totalcount;//ÀüÃ¼ °Ô½Ã¹° °³¼ö
+    private int totalcount;//ì „ì²´ ê²Œì‹œë¬¼ ê°œìˆ˜
     private int countlist;
-    private int pagenum;//Ã¹ÆäÀÌÁö¸¦ Ç¥½ÃÇÏ±â À§ÇÔ, ÆäÀÌÁö ¹øÈ£¸¦ ³ªÅ¸³½´Ù
-    private int contentnum=10;//ÇÑÆäÀÌÁö¿¡ ¸î°³ º¸ÀÏÁö
-    private int startPage=1;//beginpage µðÆúÆ® 1
-    private int endPage=5;//endpage µðÆúÆ® 5
-    private boolean prev=false;//ÀÌÀü ÆäÀÌÁö È­»ìÇ¥
-    private boolean next;//´ÙÀ½ ÆäÀÌÁö È­»ìÇ¥
+    private int pagenum;//ì²«íŽ˜ì´ì§€ë¥¼ í‘œì‹œí•˜ê¸° ìœ„í•¨, íŽ˜ì´ì§€ ë²ˆí˜¸ë¥¼ ë‚˜íƒ€ë‚¸ë‹¤
+    private int contentnum=10;//í•œíŽ˜ì´ì§€ì— ëª‡ê°œ ë³´ì¼ì§€
+    private int startPage=1;//beginpage ë””í´íŠ¸ 1
+    private int endPage=5;//endpage ë””í´íŠ¸ 5
+    private boolean prev=false;//ì´ì „ íŽ˜ì´ì§€ í™”ì‚´í‘œ
+    private boolean next;//ë‹¤ìŒ íŽ˜ì´ì§€ í™”ì‚´í‘œ
     private int currentblock=1;
     private int lastblock;
     
@@ -32,16 +32,27 @@ public class PageMaker {
         return startPage;
     }
  
-    public void setStartPage(int currentblock) {
-        this.startPage = (currentblock*5)-4;
-        //ÇÑ ÆäÀÌÁö¿¡ 5°³¾¿ º¸¿©Áö¹Ç·Î
-        //ÇöÀç ÆäÀÌÁö ºí·ÏÀÇ ¹øÈ£ * ºí·Ï´ç ÆäÀÌÁöÀÇ °³¼ö(5) - 4¸¦ ÇÏ¸é ½ÃÀÛ ÆäÀÌÁö ¹øÈ£¸¦ Á¤ÇÒ ¼ö ÀÖ´Ù
-    }
- 
     public int getEndPage() {
         return endPage;
     }
- 
+    
+    public int calcpage(int totalcount,int contentnum) {//ì „ì²´ ëª‡íŽ˜ì´ì§€ê¹Œì§€ ìžˆì„ì§€ í•¨ìˆ˜ë¡œ ê³„ì‚°í•œë‹¤
+        int totalpage = totalcount/contentnum;//ì „ì²´ ê²Œì‹œë¬¼ ìˆ˜ë¥¼ í•œ íŽ˜ì´ì§€ë‹¹ ëª‡ê°œ ë³´ì´ëŠ”ì§€ë¡œ ë‚˜ëˆˆë‹¤
+        if (totalcount % contentnum>0) {//ê·¸ë¦¬ê³  ë‚˜ë¨¸ì§€ê°€ ìžˆë‹¤ë©´ 1ì„ ë”í•´ì„œ í•œ íŽ˜ì´ì§€ ì¦ê°€ ì‹œí‚¨ë‹¤
+            totalpage++;
+        }
+        if (totalpage<this.pagenum) {
+            this.pagenum=totalpage;
+        }
+        return totalpage;//íŽ˜ì´ì§€ ê°œìˆ˜ë¥¼ ë¦¬í„´í•œë‹¤
+    }
+    
+    public void setStartPage(int currentblock) {
+        this.startPage = (currentblock*5)-4;
+        //í•œ íŽ˜ì´ì§€ì— 5ê°œì”© ë³´ì—¬ì§€ë¯€ë¡œ
+        //í˜„ìž¬ íŽ˜ì´ì§€ ë¸”ë¡ì˜ ë²ˆí˜¸ * ë¸”ë¡ë‹¹ íŽ˜ì´ì§€ì˜ ê°œìˆ˜(5) - 4ë¥¼ í•˜ë©´ ì‹œìž‘ íŽ˜ì´ì§€ ë²ˆí˜¸ë¥¼ ì •í•  ìˆ˜ ìžˆë‹¤
+    }
+    
     public void setEndPage(int getlastblock,int getcurrentblock) {
         if (getlastblock==getcurrentblock) {
             this.endPage = calcpage(getTotalcount(),getContentnum());
@@ -49,48 +60,35 @@ public class PageMaker {
         else {
             this.endPage = getStartPage()+4;
         }
-        //±âº» ½ÃÀÛÆäÀÌÁö +4
-        //Á¶°Ç , ¸¶Áö¸· ÆäÀÌÁö ºí·ÏÀÌ¸é ¸¶Áö¸· ÆäÀÌÁö ¹øÈ£
+        //ê¸°ë³¸ ì‹œìž‘íŽ˜ì´ì§€ +4
+        //ì¡°ê±´ , ë§ˆì§€ë§‰ íŽ˜ì´ì§€ ë¸”ë¡ì´ë©´ ë§ˆì§€ë§‰ íŽ˜ì´ì§€ ë²ˆí˜¸
     }
     
- 
-    public int getCurrentblock() {
-        return currentblock;
+    public void setCurrentblock(int pagenum) {//í˜„ìž¬ íŽ˜ì´ì§€ ë¸”ë¡ì˜ ë²ˆí˜¸ê°€ ëª‡ë²ˆì¸ì§€ ì§€ì •í•´ì£¼ëŠ” í•¨ìˆ˜
+    	//íŽ˜ì´ì§€ë²ˆí˜¸ / íŽ˜ì´ì§€ ê·¸ë£¹ ì•ˆì˜ íŽ˜ì´ì§€ ê°œìˆ˜(5)
+    	//->ë‚˜ë¨¸ì§€ ìžˆìœ¼ë©´ ë”í•˜ê¸° 1í•œë‹¤. -> ì´ ê²°ê³¼ë¥¼ í˜„ìž¬ ë¸”ë¡ ë²ˆí˜¸ë¼ê³  ë¶€ë¥¸ë‹¤. cblock
+      this.currentblock = pagenum/5;
+      if (pagenum%5>0) {
+          this.currentblock++;
+      }
     }
- 
-    public void setCurrentblock(int pagenum) {//ÇöÀç ÆäÀÌÁö ºí·ÏÀÇ ¹øÈ£°¡ ¸î¹øÀÎÁö ÁöÁ¤ÇØÁÖ´Â ÇÔ¼ö
-//        ÆäÀÌÁö¹øÈ£ / ÆäÀÌÁö ±×·ì ¾ÈÀÇ ÆäÀÌÁö °³¼ö(5)
-//        ->³ª¸ÓÁö ÀÖÀ¸¸é ´õÇÏ±â 1ÇÑ´Ù. -> ÀÌ °á°ú¸¦ ÇöÀç ºí·Ï ¹øÈ£¶ó°í ºÎ¸¥´Ù. cblock
- 
-        this.currentblock = pagenum/5;
-        if (pagenum%5>0) {
-            this.currentblock++;
-        }
-    }
- 
-    public int getLastblock() {
-        return lastblock;
-    }
- 
-    public void setLastblock(int totalcount) {//¸¶Áö¸· ÆäÀÌÁö ºí·ÏÀÇ ¹øÈ£°¡ ¹ºÁö ÁöÁ¤ÇØÁÖ´Â ÇÔ¼ö
-        //ÀüÃ¼ ±Û °³¼ö¸¦ »ç¿ëÇØ¼­ ÁöÁ¤ÇÑ´Ù
+    public void setLastblock(int totalcount) {//ë§ˆì§€ë§‰ íŽ˜ì´ì§€ ë¸”ë¡ì˜ ë²ˆí˜¸ê°€ ë­”ì§€ ì§€ì •í•´ì£¼ëŠ” í•¨ìˆ˜
+        //ì „ì²´ ê¸€ ê°œìˆ˜ë¥¼ ì‚¬ìš©í•´ì„œ ì§€ì •í•œë‹¤
         this.lastblock = totalcount / (5*this.contentnum);
         if (totalcount%(5*this.contentnum)>0) {
             this.lastblock++;
         }
-//        ÀüÃ¼ ±Û °³¼ö(128) / ÆäÀÌÁö ±×·ì ¾ÈÀÇ ÆäÀÌÁö °³¼ö(5) * ÇÑÆäÀÌÁö´ç ±Û °³¼ö(10)
-//        ->³ª¸ÓÁö ÀÖÀ¸¸é ´õÇÏ±â 1ÇÑ´Ù. -> ÀÌ °á°ú¸¦ ¸¶Áö¸· ºí·Ï ¹øÈ£¶ó°í ºÎ¸¥´Ù. last block
+        //ì „ì²´ ê¸€ ê°œìˆ˜(128) / íŽ˜ì´ì§€ ê·¸ë£¹ ì•ˆì˜ íŽ˜ì´ì§€ ê°œìˆ˜(5) * í•œíŽ˜ì´ì§€ë‹¹ ê¸€ ê°œìˆ˜(10)
+        //->ë‚˜ë¨¸ì§€ ìžˆìœ¼ë©´ ë”í•˜ê¸° 1í•œë‹¤. -> ì´ ê²°ê³¼ë¥¼ ë§ˆì§€ë§‰ ë¸”ë¡ ë²ˆí˜¸ë¼ê³  ë¶€ë¥¸ë‹¤. last block
     }
- 
     public void prevnext(int pagenum) {
-        
         if (pagenum>0 && pagenum<6) {
             setPrev(false);
             setNext(true);
         }
-        else if(getLastblock()==getCurrentblock()) {//5°³¾¿ ÆäÀÌÁöÀÇ ±×·ì¹øÈ£¸¦ ÁöÁ¤ÇÑ´Ù.
-            //±×·ì ¹øÈ£°¡ 3ÀÌ¶ó´Â °ÍÀº ÇØ´ç ÆäÀÌÁö ±×·ìÀÌ ¸¶Áö¸·ÀÌ¶ó´Â °ÍÀÌ±â¿¡ ÀÌÀü È­»ìÇ¥¸¸ È°¼ºÈ­ÇÑ´Ù 
-            //ÀÌ µÎ°³°¡ °°´Ù¸é ¸¶Áö¸· ºí·ÏÀÌ¹Ç·Î ÀÌÀü¸¸ ÀÖ°í ÀÌÈÄ°¡ ¾ø´Ù.
+        else if(getLastblock()==getCurrentblock()) {//5ê°œì”© íŽ˜ì´ì§€ì˜ ê·¸ë£¹ë²ˆí˜¸ë¥¼ ì§€ì •í•œë‹¤.
+            //ê·¸ë£¹ ë²ˆí˜¸ê°€ 3ì´ë¼ëŠ” ê²ƒì€ í•´ë‹¹ íŽ˜ì´ì§€ ê·¸ë£¹ì´ ë§ˆì§€ë§‰ì´ë¼ëŠ” ê²ƒì´ê¸°ì— ì´ì „ í™”ì‚´í‘œë§Œ í™œì„±í™”í•œë‹¤ 
+            //ì´ ë‘ê°œê°€ ê°™ë‹¤ë©´ ë§ˆì§€ë§‰ ë¸”ë¡ì´ë¯€ë¡œ ì´ì „ë§Œ ìžˆê³  ì´í›„ê°€ ì—†ë‹¤.
 
             setPrev(true);
             setNext(false);        
@@ -99,18 +97,13 @@ public class PageMaker {
             setPrev(true);
             setNext(true);
         }
+    }    
+    public int getCurrentblock() {
+        return currentblock;
     }
-    public int calcpage(int totalcount,int contentnum) {//ÀüÃ¼ ¸îÆäÀÌÁö±îÁö ÀÖÀ»Áö ÇÔ¼ö·Î °è»êÇÑ´Ù
-        int totalpage = totalcount/contentnum;//ÀüÃ¼ °Ô½Ã¹° ¼ö¸¦ ÇÑ ÆäÀÌÁö´ç ¸î°³ º¸ÀÌ´ÂÁö·Î ³ª´«´Ù
-        if (totalcount % contentnum>0) {//±×¸®°í ³ª¸ÓÁö°¡ ÀÖ´Ù¸é 1À» ´õÇØ¼­ ÇÑ ÆäÀÌÁö Áõ°¡ ½ÃÅ²´Ù
-            totalpage++;
-        }
-        if (totalpage<this.pagenum) {
-            this.pagenum=totalpage;
-        }
-        return totalpage;//ÆäÀÌÁö °³¼ö¸¦ ¸®ÅÏÇÑ´Ù
+    public int getLastblock() {
+        return lastblock;
     }
- 
     public int getTotalcount() {
         return totalcount;
     }

@@ -60,8 +60,10 @@
 											<textarea id="titlett2" th:text="${session.wikidocument.getTitle()}"></textarea>
 										</div>
 
-											<h4 id="hh" th:text="${session.wikidocument.getContent()}"></h4>
+											<h4 id="wikicontent" th:text="${session.wikidocument.getContent()}"></h4>
+											<!--  wikicontent id를 가진 여기에 다른 문서 링크가 생성된다. -->
 											<th:block th:if="${session.linklist!=null}">
+											<!--  null이 아니라면 하위문서 링크 리스트가 모두 만들어진다. -->
 												<th:block th:each="list:${session.linklist}">
 													<tr>
 														<td><a th:href="@{/wikiReadRequest(title=${list.getTitle()})}" th:text="${list.getTitle()}"></a></td>
@@ -157,14 +159,6 @@
     <script src="https://fb.me/react-dom-15.0.1.js"></script>
 			<script>
 
-			function getPostt(llink, llink2){
-					link=$(llink).val();
-			  		location.href="/wikiReadRequest?title="+link;
-			}
-			function getPostt(llink, llink2){
-				link=$(llink).val();
-		  		location.href="/wikiReadRequest?title="+link;
-			}
 			
 			function goDebatePost(){
 				var title = $(titlet).val();
@@ -172,7 +166,8 @@
 				
 			}
 			
-			var link10 = $('#hh').text();
+			var link10 = $('#wikicontent').text();
+			//문서의 내용의 읽어와서 link10 변수에 저장
 			let f =0;
 			let s =-1;
 			let split;
@@ -180,17 +175,17 @@
 				if(f==-1){
 					break;
 				}
-				 f= link10.indexOf("[" ,s+1);
+				 f= link10.indexOf("[" ,s+1);//[]를 기준으로 문자열을 자른다.
 				 s = link10.indexOf("]" ,f+1);
 				 split =link10.substring(f+1,s);
-				 console.log(split);
+				// console.log(split);
 				 if(f!=-1){
-					 var text = split; // get text of beta element i.e. View Details
+					 var text = split;
 				      var href = '/wikiReadRequest?title=';
-					 var betaHTML = "<a href='" + href +  text + "'> " + text + "</a>"; // Create anchor
-					 $('#hh').before(betaHTML);
+					 var betaHTML = "<a href='" + href +  text + "'> " + text + "</a>";
+					 //자른 문자열의 타이틀로 <a> 태그를 만들어서 링크를 만들어주고 문서내용 앞에 생성한다.
+					 $('#wikicontent').before(betaHTML);
 				 }
-
 			}
 
 			

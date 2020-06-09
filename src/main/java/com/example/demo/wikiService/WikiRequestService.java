@@ -2,53 +2,66 @@ package com.example.demo.wikiService;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.DAO.IWikidocumentDao;
 import com.example.demo.DAO.WikidocumentDao;
 import com.example.demo.wikimodel.Wikidocument;
 
 @Service
 public class WikiRequestService implements IWikidocumentService {
-
 	@Autowired
-	WikidocumentDao wikidocumentDao;
+	private HttpSession session;
+	
+	@Autowired
+	IWikidocumentDao wikidocumentDao;
 	
 	@Override
-	public void write(String title, String content) {
+	public void write(String title, String content) {//ì“°ê¸°ê¸°ëŠ¥
 		wikidocumentDao.documentwrite(title, content);
 	}
 	@Override
 	public String read(String title) {
-		String page=wikidocumentDao.documentread(title);
-		
-		return page;
+		Wikidocument wikidocument=wikidocumentDao.documentread(title);
+		session.setAttribute("wikidocument", wikidocument);
+		if(wikidocument == null) {//í•´ë‹¹ ë¬¸ì„œê°€ ì—†ìœ¼ë©´ ì˜¤ë¥˜í™”ë©´ì„ ë„ìš°ëŠ” í˜ì´ì§€ëª…ì„ ë¦¬í„´
+			return "wikireaderror";
+		}
+		int i = (int)wikidocument.getDocumentId();//ì½ê³ ì í•˜ëŠ” ë¬¸ì„œì˜ id ë¥¼ ê°€ì ¸ì™€ì„œ
+		//í•´ë‹¹ idì— í¬í•¨ëœ í•˜ìœ„ë¬¸ì„œ ë§í¬ëª©ë¡ì„ ê°€ì ¸ì™€ì„œ ë¦¬ìŠ¤íŠ¸ë¡œ ë°˜í™˜
+		List<Wikidocument> list =wikidocumentDao.documentlinklist(i);
+		session.setAttribute("linklist", list); 
+		return "wikiread";
 	}
-	
 	@Override
-	public void downwrite(String title, String content , int linktitle) {
-		wikidocumentDao.documentdownwrite(title, content);
-		wikidocumentDao.documentdownupdate(title,linktitle); // »óÀ§¿¡ ÇÏÀ§¹®¼­ ¸ñ·Ï ¾÷µ«ÇÏ´Â ºÎºĞ
-		
-	}
-	//¿©±â¿¡´Â ¼­ºñ½º ¸í¸¸ ÀûÀ¸¸é µÈ´Ù update ³ª µô¸®Æ® ±×·±°Å ±âÁ¸ ÇÁ·ÎÁ§Æ®´Â ¼­ºñ½º¿¡¼­ ¹Ù·Î µ¥ÀÌÅÍº£ÀÌ½º·Î ¿¬°áÇß´Âµ¥ 
-	//ÀÌ¹ø ÇÁ·ÎÁ§Æ®¿¡¼­´Â Dao¸¦ °ÅÃÄ¼­ Dao¿¡¼­ ¼±¾ğÇÔ ÇÔ¼ö¿¡¼­ ½ÇÁúÀûÀÎ DB¿ÍÀÇ Åë½ÅÀ» ÇÑ´Ù.
-	
-	@Override
-	public void rewrite(String title, String content) {
-		wikidocumentDao.documentrewrite(title, content);
+	public List<Wikidocument> readwikicount() {
+		List<Wikidocument> wikidocumentMostList = wikidocumentDao.mostcoutdocument();
+		return wikidocumentMostList;
 	}
 	
 	@Override
 	public void count(String title) {
 		wikidocumentDao.documentcount(title);
 	}
-
+	
 	@Override
-	public List<Wikidocument> readwikicount() {
-		List<Wikidocument> wikidocumentMostList = wikidocumentDao.mostcoutdocument();
-		return wikidocumentMostList;
+	public void downwrite(String title, String content , int linktitle) {
+		wikidocumentDao.documentdownwrite(title, content);
+		wikidocumentDao.documentdownupdate(title,linktitle); // ìƒìœ„ì— í•˜ìœ„ë¬¸ì„œ ëª©ë¡ ì—…ëƒí•˜ëŠ” ë¶€ë¶„
 	}
+	//ì—¬ê¸°ì—ëŠ” ì„œë¹„ìŠ¤ ëª…ë§Œ ì ìœ¼ë©´ ëœë‹¤ update ë‚˜ ë”œë¦¬íŠ¸ ê·¸ëŸ°ê±° ê¸°ì¡´ í”„ë¡œì íŠ¸ëŠ” ì„œë¹„ìŠ¤ì—ì„œ ë°”ë¡œ ë°ì´í„°ë² ì´ìŠ¤ë¡œ ì—°ê²°í–ˆëŠ”ë° 
+		//ì´ë²ˆ í”„ë¡œì íŠ¸ì—ì„œëŠ” Daoë¥¼ ê±°ì³ì„œ Daoì—ì„œ ì„ ì–¸í•¨ í•¨ìˆ˜ì—ì„œ ì‹¤ì§ˆì ì¸ DBì™€ì˜ í†µì‹ ì„ í•œë‹¤.
+	
+	@Override
+	public void rewrite(String title, String content) {
+		wikidocumentDao.documentrewrite(title, content);
+	}
+
+
+
 	
 	
 }

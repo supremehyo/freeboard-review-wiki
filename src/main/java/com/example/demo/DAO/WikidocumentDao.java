@@ -10,32 +10,35 @@ import com.example.demo.wikiRepository.WikidocumentRepository;
 import com.example.demo.wikimodel.Wikidocument;
 
 @Component
-public class WikidocumentDao implements IWikidocumentDao{ // ÀÌ °´Ã¼°¡ ¼­ºñ½º ÆÄÀÏ¿¡¼­ ÀÌ¿ëµÈ´Ù.
+public class WikidocumentDao implements IWikidocumentDao{
 	@Autowired
 	WikidocumentRepository wikidocumentRepository;
 	@Autowired
 	private HttpSession session;
 
 	@Override
-	public void documentwrite(String title, String content) { // ¾²±â ±â´É
+	public void documentwrite(String title, String content) {//ì“°ê¸°ê¸°ëŠ¥
 		Wikidocument wikidocument = new Wikidocument();
 		wikidocument.setTitle(title);
 		wikidocument.setContent(content);
 		wikidocumentRepository.save(wikidocument);
 	}
 	@Override
-	public String documentread(String title) { // ÀĞ±â ±â´É
-		
+	public Wikidocument documentread(String title) {
+		//title ì •ë³´ë¥¼ ë°›ì•„ì„œ ê·¸ ì œëª©ì„ ê°€ì§„ ë¬¸ì„œë¥¼ DBì—ì„œ ê°€ì ¸ì˜¤ê³  Wikidocument ê°ì²´ì— ì €ì¥í•˜ê³  ë¦¬í„´.
 		Wikidocument wikidocument=wikidocumentRepository.findByTitle(title);
-		session.setAttribute("wikidocument", wikidocument);
-		if(wikidocument == null) {
-			return "wikireaderror";
-		}
-		int i = (int) wikidocument.getDocumentId();
-		List<Wikidocument> list=wikidocumentRepository.findAllByLinktitle(i);
-		session.setAttribute("linklist", list);
-		return "wikiread";
+		return wikidocument; 
 	}
+	
+	@Override
+	public List<Wikidocument> documentlinklist(int i){
+		//í•˜ìœ„ë¬¸ì„œ ë§í¬ëª©ë¡ì„ DBì—ì„œ ê°€ì ¸ì˜¤ëŠ” ë©”ì†Œë“œ
+		List<Wikidocument> list=wikidocumentRepository.findAllByLinktitle(i);
+		return list;
+	}
+	
+	
+	
 	
 	@Override
 	public void documentdownwrite(String title, String content) {

@@ -38,7 +38,7 @@ public class Users {
 	}
 	@Column(nullable = true, name = "userid")
 	private String userid;
-	private String userpw; //여기를 카멜표기법으로 해야지 jpa 리파지토리에서 메소드 만들때 만들어지더라
+	private String userpw; 
 	private String username;
 	
 

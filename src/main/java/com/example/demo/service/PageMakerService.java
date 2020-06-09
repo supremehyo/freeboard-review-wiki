@@ -10,22 +10,21 @@ import com.example.demo.pageMaker.PageMaker;
 @Service
 public class PageMakerService {
 
-	public PageMaker generatePagemaker(int pageNum , int countNum , JpaRepository<Freeboard, Long> repository) {
+	public PageMaker generatePagemaker(int pageNum , int countNum , 
+			JpaRepository<Freeboard, Long> repository) {
 		int totalcount = (int)repository.count();
 		PageMaker pagemaker = new PageMaker();
 		
-		/*---------ÆäÀÌÁö °´Ã¼¿¡ »õ·Î¿î Á¤º¸ ´Ù½Ã ÁöÁ¤ÇØÁÖ´Â ºÎºĞ------------------*/
-        pagemaker.setTotalcount(totalcount);//ÀüÃ¼ °Ô½Ã±Û °³¼ö ÁöÁ¤ÇÑ´Ù
-        pagemaker.setPagenum(pageNum-1);//ÇöÀç ÆäÀÌÁö¸¦ ÆäÀÌÁö °´Ã¼¿¡ ´Ù½Ã ÁöÁ¤ÇØÁØ´Ù//¸î¹ø ÆäÀÌÁöÀÎÁö PageMaker¿¡ ¼¼ÆÃÇÑ´Ù
-        pagemaker.setContentnum(countNum);//ÇÑ ÆäÀÌÁö¿¡ ¸î°³¾¿ º¸¿©ÁÙÁö ¼¼ÆÃÇÑ´Ù
-        pagemaker.setCurrentblock(pageNum);//ÇöÀç ÆäÀÌÁöºí·ÏÀÌ ¸î¹øÀÎÁö ÇöÀç ÆäÀÌÁö ¹øÈ£¸¦ ÅëÇØ¼­ ÁöÁ¤ÇÑ´Ù
-        pagemaker.setLastblock(pagemaker.getTotalcount());//¸¶Áö¸· ºí·Ï ¹øÈ£¸¦ ÀüÃ¼ °Ô½Ã±Û ¼ö¸¦ ÅëÇØ¼­ Á¤ÇÑ´Ù
-    /*---------ÆäÀÌÁö °´Ã¼¿¡ »õ·Î¿î Á¤º¸ ´Ù½Ã ÁöÁ¤ÇØÁÖ´Â ºÎºĞ------------------*/
+        pagemaker.setTotalcount(totalcount);//ì „ì²´ ê²Œì‹œê¸€ ê°œìˆ˜ ì§€ì •í•œë‹¤
+        pagemaker.setPagenum(pageNum-1);//í˜„ì¬ í˜ì´ì§€ë¥¼ í˜ì´ì§€ ê°ì²´ì— ë‹¤ì‹œ ì§€ì •í•´ì¤€ë‹¤//ëª‡ë²ˆ í˜ì´ì§€ì¸ì§€ PageMakerì— ì„¸íŒ…í•œë‹¤
+        pagemaker.setContentnum(countNum);//í•œ í˜ì´ì§€ì— ëª‡ê°œì”© ë³´ì—¬ì¤„ì§€ ì„¸íŒ…í•œë‹¤
+        pagemaker.setCurrentblock(pageNum);//í˜„ì¬ í˜ì´ì§€ë¸”ë¡ì´ ëª‡ë²ˆì¸ì§€ í˜„ì¬ í˜ì´ì§€ ë²ˆí˜¸ë¥¼ í†µí•´ì„œ ì§€ì •í•œë‹¤
+        pagemaker.setLastblock(pagemaker.getTotalcount());//ë§ˆì§€ë§‰ ë¸”ë¡ ë²ˆí˜¸ë¥¼ ì „ì²´ ê²Œì‹œê¸€ ìˆ˜ë¥¼ í†µí•´ì„œ ì •í•œë‹¤
         
-        pagemaker.prevnext(pageNum);//ÇöÀç ÆäÀÌÁö ¹øÈ£·Î È­»ìÇ¥ ³ªÅ¸³¾Áö °áÁ¤ÇÑ´Ù
-        pagemaker.setStartPage(pagemaker.getCurrentblock());//½ÃÀÛÆäÀÌÁö ¹øÈ£¸¦ ÇöÀç ÆäÀÌÁö ºí·ÏÀ¸·Î Á¤ÇÑ´Ù
+        pagemaker.prevnext(pageNum);//í˜„ì¬ í˜ì´ì§€ ë²ˆí˜¸ë¡œ í™”ì‚´í‘œ ë‚˜íƒ€ë‚¼ì§€ ê²°ì •í•œë‹¤
+        pagemaker.setStartPage(pagemaker.getCurrentblock());//ì‹œì‘í˜ì´ì§€ ë²ˆí˜¸ë¥¼ í˜„ì¬ í˜ì´ì§€ ë¸”ë¡ìœ¼ë¡œ ì •í•œë‹¤
         pagemaker.setEndPage(pagemaker.getLastblock(),pagemaker.getCurrentblock());
-        //ÇöÀç ºí·Ï ¹øÈ£¿Í ¸¶Áö¸· ºí·Ï ¹øÈ£¸¦ º¸³»¼­ ´ëÁ¶ÇÏ°í ÆäÀÌÁö ºí·ÏÀÇ ¸¶Áö¸· ¹øÈ£¸¦ ÁöÁ¤ÇÑ´Ù
+        //í˜„ì¬ ë¸”ë¡ ë²ˆí˜¸ì™€ ë§ˆì§€ë§‰ ë¸”ë¡ ë²ˆí˜¸ë¥¼ ë³´ë‚´ì„œ ëŒ€ì¡°í•˜ê³  í˜ì´ì§€ ë¸”ë¡ì˜ ë§ˆì§€ë§‰ ë²ˆí˜¸ë¥¼ ì§€ì •í•œë‹¤
 
         return pagemaker;
 

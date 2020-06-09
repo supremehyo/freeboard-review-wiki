@@ -26,31 +26,23 @@ public class FreeboardController {
 
 	@Autowired
 	private FreeboardListService freeboardlistService;
-	
 	@Autowired
 	private FreeboardWriteService freeboardWriteService;
-	
 	@Autowired
 	private FreeboardPostService freeboardPostService;
-	
 	@Autowired
 	private FreeboardDropService freeboardDropService;
 	@Autowired
 	private FreeboardRewriteService freeboardRewriteService;
 	
 	private int returnIntValue(String stringtoint) {
-		
 		return Integer.parseInt(stringtoint);
 	}
-	
-	@GetMapping("/freeboard")//여기밑에 requestparam에 value가 pageNum 이면 get 메소드 주소에 pageNum= 몇 이런식으로 주소로 전달되어옴
+	@GetMapping("/freeboard")
 		public String freeboard(@RequestParam(value="pageNum" , defaultValue = "1")String pageNum) {
 			String page = freeboardlistService.freeboardList(returnIntValue(pageNum));
-			
-			
 			return page;
 		}
-	
 	@PostMapping("/freeboardWriteRequest")
 	public String freeboardWirte(@RequestParam Map <String,String> paramMap) {
 		String title = paramMap.get("title");
@@ -63,17 +55,16 @@ public class FreeboardController {
 	}
 	
 	@PostMapping("/freeboardDrop")
-	public @ResponseBody String freeboardDrop(@RequestParam(value="ok") String ok, @RequestParam(value="freeid") String freeid) {
+	public  String freeboardDrop(@RequestParam(value="ok") String ok, @RequestParam(value="freeid") String freeid) {
 		if(ok.equals("ok")){
 			freeboardDropService.drop(freeid);
+			return "redirect:/freeboard";
 		}
 		return "redirect:/freeboard";
 	}
 	@PostMapping("/freeboardRewrite")
-	public @ResponseBody String freeboardRewrite(@RequestParam(value="stringreturn") String stringreturn, @RequestParam(value="freeid") String freeid) {
-		
+	public String freeboardRewrite(@RequestParam(value="stringreturn") String stringreturn, @RequestParam(value="freeid") String freeid) {
 		freeboardRewriteService.Rewrite(stringreturn,freeid);
-		
 		return "redirect:/freeboard";
 	}
 	@GetMapping("freeboardinfo")

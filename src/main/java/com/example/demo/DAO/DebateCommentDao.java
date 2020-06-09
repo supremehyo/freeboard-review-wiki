@@ -15,9 +15,6 @@ import com.example.demo.wikimodel.DebateComment;
 
 @Component
 public class DebateCommentDao implements IDebateCommentDao{
-
-	@Autowired
-	private HttpSession session;
 	@Autowired
 	private DebateCommentRepository debateCommentRepository;
 
@@ -29,6 +26,7 @@ public class DebateCommentDao implements IDebateCommentDao{
 		 debatecomment.setNickname(nickname);
 		 debatecomment.setContent(content);
 		 debateCommentRepository.save(debatecomment);
+		//Service 로 부터 전달받은 정보가 담긴 debatecomment 객체를 DB에 저장한다.
 		}
 		@Override
 		public List<DebateComment> getdebateCommentList(long id) {

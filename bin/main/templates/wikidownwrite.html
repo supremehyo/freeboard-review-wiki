@@ -143,6 +143,9 @@
 			<script src="js/main.js"></script>
 			<script>
 			function getParam(sname) {
+				//url 에서 문서 id 를 파싱해서 하위문서 작성 form에
+				//hiden 값으로 입력해주는 함수
+				// ex) /wikidownwrite?linktitle=3 에서 3 을 가져온다.
 			    var params = location.search.substr(location.search.indexOf("?") + 1);
 			    var sval = "";
 			    params = params.split("&");
